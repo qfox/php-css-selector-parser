@@ -197,4 +197,8 @@ class ParserTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('#y.cls1.cls2 .cls3 + abc#def[x="y"] > yy, ff',
 			$this->parser->render($this->parser->parse('.cls1.cls2#y .cls3+abc#def[x=y]>yy,ff')));
 	}
+
+	function testNestedStar () {
+		$this->assertEquals('tag>*', $this->parser->render($this->parser->parse('tag>*')));
+	}
 }
