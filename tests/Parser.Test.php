@@ -198,7 +198,11 @@ class ParserTest extends PHPUnit_Framework_TestCase {
 			$this->parser->render($this->parser->parse('.cls1.cls2#y .cls3+abc#def[x=y]>yy,ff')));
 	}
 
-	function testNestedStar () {
-		$this->assertEquals('tag>*', $this->parser->render($this->parser->parse('tag>*')));
+	function testNestedStar1 () {
+		$this->assertEquals('* > tag', $this->parser->render($this->parser->parse('*>tag')));
+	}
+
+	function testNestedStar2 () {
+		$this->assertEquals('tag > *', $this->parser->render($this->parser->parse('tag>*')));
 	}
 }

@@ -249,6 +249,7 @@ class Context {
 			if ($this->ch == '*') {
 				$rule = $rule ?: array();
 				$rule['tagName'] = '*';
+				$this->pos++;
 			}
 			elseif (__isIdentStart($this->ch) || $this->ch == '\\') {
 				$rule = $rule ?: array();
@@ -570,7 +571,7 @@ class Parser {
 
 				case 'rule':
 					if (isset($entity['tagName'])) {
-						$res = $this->escapeIdentifier($entity['tagName']);
+						$res = $entity['tagName'] === '*' ? '*' : $this->escapeIdentifier($entity['tagName']);
 					}
 					if (isset($entity['id'])) {
 						$res .= '#' . $this->escapeIdentifier($entity['id']);
