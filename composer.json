@@ -1,6 +1,6 @@
 {
     "name": "zxqfox/css-selector-parser",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Simple CSS selector parser. PHP port of https://github.com/mdevils/node-css-selector-parser",
     "keywords": [
         "css",

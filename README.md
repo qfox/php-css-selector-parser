@@ -9,14 +9,14 @@ Installation
 ------------
 
 ```
-composer install css-selector-parser
+composer require zxqfox/css-selector-parser
 ```
 
 Usage
 -----
 
 ```php
-use \CSSSelector\Parser;
+use CSSSelectorParser\Parser;
 
 $parser = new Parser();
 
@@ -26,7 +26,7 @@ $parser->registerAttrEqualityMods('^', '$', '*', '~');
 $parser->enableSubstitutes();
 
 $css = 'a[href^=/], .container:has(nav) > a[href]:lt($var)';
-var_dump(json_encode($parser->parse($css), JSON_PRETTY_PRINT));
+echo json_encode($parser->parse($css), JSON_PRETTY_PRINT);
 ```
 
 Produces:
