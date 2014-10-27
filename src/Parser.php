@@ -49,16 +49,16 @@ class Context {
 	protected $pos = 0;
 	protected $ch;
 
-	protected $pseudos = [];
-	protected $attrEqualityMods = [];
-	protected $ruleNestingOperators = [];
+	protected $pseudos = array();
+	protected $attrEqualityMods = array();
+	protected $ruleNestingOperators = array();
 	protected $substitutesEnabled = false;
-	protected $identSpecialChars = [];
-	protected $identReplacements = [];
-	protected $identReplacementsRev = [];
-	protected $strReplacementsRev = [];
-	protected $singleQuoteEscapeChars = [];
-	protected $doubleQuotesEscapeChars = [];
+	protected $identSpecialChars = array();
+	protected $identReplacements = array();
+	protected $identReplacementsRev = array();
+	protected $strReplacementsRev = array();
+	protected $singleQuoteEscapeChars = array();
+	protected $doubleQuotesEscapeChars = array();
 
 	public function __construct ($str, $pos, $conf) {
 		$this->str = $str;
@@ -188,10 +188,10 @@ class Context {
 			$this->pos++;
 			$this->skipWhitespace();
 			if ($res['type'] != 'selectors') {
-				$res = [
+				$res = array(
 					'type' => 'selectors',
-					'selectors' => [$selector]
-				];
+					'selectors' => array($selector)
+				);
 			}
 			$selector = $this->parseSingleSelector();
 			if (!$selector) {
@@ -205,7 +205,7 @@ class Context {
 	// @parseSingleSelector = ->
 	protected function parseSingleSelector () {
 		$this->skipWhitespace();
-		$selector = ['type' => 'ruleSet'];
+		$selector = array('type' => 'ruleSet');
 		$rule = $this->parseRule();
 		if (!$rule) {
 			return null;
@@ -247,17 +247,17 @@ class Context {
 		while ($this->pos < $this->l) {
 			$this->nextCh(false);
 			if ($this->ch == '*') {
-				$rule = $rule ?: [];
+				$rule = $rule ?: array();
 				$rule['tagName'] = '*';
 			}
 			elseif (__isIdentStart($this->ch) || $this->ch == '\\') {
-				$rule = $rule ?: [];
+				$rule = $rule ?: array();
 				$rule['tagName'] = $this->getIdent();
 			}
 			elseif ($this->ch == '.') {
 				$this->pos++;
-				$rule = $rule ?: [];
-				$rule['classNames'] = @$rule['classNames'] ?: [];
+				$rule = $rule ?: array();
+				$rule['classNames'] = @$rule['classNames'] ?: array();
 				$rule['classNames'][] = $this->getIdent();
 			}
 			elseif ($this->ch == '#') {
@@ -267,13 +267,13 @@ class Context {
 					$id .= $this->ch;
 					$this->nextCh();
 				}
-				$rule = $rule ?: [];
+				$rule = $rule ?: array();
 				$rule['id'] = $id;
 			}
 			elseif ($this->ch == '[') {
 				$this->pos++;
 				$this->skipWhitespace();
-				$attr = ['name' => $this->getIdent()];
+				$attr = array('name' => $this->getIdent());
 				$this->skipWhitespace();
 				if ($this->ch == ']') {
 					$this->pos++;
@@ -326,14 +326,14 @@ class Context {
 					$this->pos++;
 					$attr['value'] = $attrValue;
 				}
-				$rule = $rule ?: [];
-				$rule['attrs'] = @$rule['attrs'] ?: [];
+				$rule = $rule ?: array();
+				$rule['attrs'] = @$rule['attrs'] ?: array();
 				$rule['attrs'][] = $attr;
 			}
 			elseif ($this->ch == ':') {
 				$this->pos++;
 				$pseudoName = $this->getIdent();
-				$pseudo = ['name' => $pseudoName];
+				$pseudo = array('name' => $pseudoName);
 				if ($this->ch == '(') {
 					$this->pos++;
 					$value = '';
@@ -376,8 +376,8 @@ class Context {
 					$this->pos++;
 					$pseudo['value'] = $value;
 				}
-				$rule = $rule ?: [];
-				$rule['pseudos'] = @$rule['pseudos'] ?: [];
+				$rule = $rule ?: array();
+				$rule['pseudos'] = @$rule['pseudos'] ?: array();
 				$rule['pseudos'][] = $pseudo;
 			}
 			else {
@@ -389,12 +389,12 @@ class Context {
 }
 
 class Parser {
-	protected $pseudos = [];
-	protected $attrEqualityMods = [];
-	protected $ruleNestingOperators = [];
+	protected $pseudos = array();
+	protected $attrEqualityMods = array();
+	protected $ruleNestingOperators = array();
 	protected $substitutesEnabled = false;
 
-	private $identSpecialChars = [
+	private $identSpecialChars = array(
 		'!'  => true,
 		'"'  => true,
 		'#'  => true,
@@ -424,51 +424,51 @@ class Parser {
 		'|'  => true,
 		'}'  => true,
 		'~'  => true,
-	];
+	);
 
-	private $identReplacements = [
+	private $identReplacements = array(
 		"n"  => "\n",
 		"r"  => "\r",
 		"t"  => "\t",
 		" "  => " ",
 		"f"  => "\f",
 		"v"  => "\v",
-	];
+	);
 
-	private $identReplacementsRev = [
+	private $identReplacementsRev = array(
 		"\n" => "\\n",
 		"\r" => "\\r",
 		"\t" => "\\t",
 		" "  => "\\ ",
 		"\f" => "\\f",
 		"\v" => "\\v",
-	];
+	);
 
-	private $strReplacementsRev = [
+	private $strReplacementsRev = array(
 		"\n" => "\\n",
 		"\r" => "\\r",
 		"\t" => "\\t",
 		"\f" => "\\f",
 		"\v" => "\\v",
-	];
+	);
 
-	private $singleQuoteEscapeChars = [
+	private $singleQuoteEscapeChars = array(
 		"n"  => "\n",
 		"r"  => "\r",
 		"t"  => "\t",
 		"f"  => "\f",
 		"\\" => "\\",
 		"\'" => "\'",
-	];
+	);
 
-	private $doubleQuotesEscapeChars = [
+	private $doubleQuotesEscapeChars = array(
 		"n"  => "\n",
 		"r"  => "\r",
 		"t"  => "\t",
 		"f"  => "\f",
 		"\\" => "\\",
 		"\"" => "\"",
-	];
+	);
 
 	public function __construct () {
 	}
@@ -531,7 +531,7 @@ class Parser {
 	}
 
 	public function parse ($str) {
-		$conf = [
+		$conf = array(
 			'pseudos'                 => $this->pseudos,
 			'attrEqualityMods'        => $this->attrEqualityMods,
 			'ruleNestingOperators'    => $this->ruleNestingOperators,
@@ -542,7 +542,7 @@ class Parser {
 			'strReplacementsRev'      => $this->strReplacementsRev,
 			'singleQuoteEscapeChars'  => $this->singleQuoteEscapeChars,
 			'doubleQuotesEscapeChars' => $this->doubleQuotesEscapeChars,
-		];
+		);
 		$ctx = new Context($str, 0, $conf);
 		return $ctx->parse();
 	}
@@ -553,7 +553,7 @@ class Parser {
 			switch ($entity['type']) {
 				case 'ruleSet':
 					$currentEntity = $entity['rule'];
-					$parts = [];
+					$parts = array();
 					while ($currentEntity) {
 						if (isset($currentEntity['nestingOperator'])) {
 							$parts[] = $currentEntity['nestingOperator'];
